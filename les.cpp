@@ -22,7 +22,7 @@ private:
     int backup;
     int c;
     int x = 10;
-    int vetor[x];
+    int vetor[10];
 public:
     LES (){
         cont = 0;
@@ -56,15 +56,15 @@ public:
                 vetor[temp] = a;
                 //recursividade
                 Insere(backup);
-                cout<<"inserido"<<endl
+                cout<<"inserido"<<endl;
                 cont++;
             }
         }
     }
-    bool Busca(a){
+    bool Busca(int a){
         // se voce tentar buscar na lista vazia
         if(cont == 0){
-            cout << "sua lista esta vazia" endl;
+            cout << "sua lista esta vazia" <<endl;
             return false;
         }else{
             //busca
@@ -80,10 +80,10 @@ public:
 
     }
 
-    bool Remove(a){
+    bool Remove(int a){
         // me utilizo da busca para achar o valor que quero remover
         if(Busca(a)){
-            for(d=c;d<x;d++){
+            for(int d=c;d<x;d++){
                 vetor[d] = vetor[d+1];
                 cout<<"removido"<<endl;
                 return true;
@@ -93,4 +93,6 @@ public:
             return false;
         }
     }
-
+  
+  
+};
