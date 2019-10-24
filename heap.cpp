@@ -1,5 +1,7 @@
 #include <iostream>
 
+using namespace std;
+
 template <typename T, int MAX>
 
 class Heap{
@@ -40,7 +42,7 @@ private:
     }
 
     void constroiHeap(){
-        for(int i = ultPai();i >= 0 ; i--;){
+        for(int i = ultPai();i >= 0 ; i--){
             swift(i);
         }
     }
@@ -51,7 +53,7 @@ public:
 
     }
     Heap(T v[], int n){
-        this.n = 0;
+        //this.n = 0;
         if(n >= MAX){
             return;
         }
@@ -75,9 +77,10 @@ public:
         for(int i=ultPai(); i>= 0; i = pai(i)){
             swift(i);
         }
+        return true;
     }
 
-    T remove(){
+    T remove(bool *ok,int n){
         if(n == 0){
             if(ok){
                 *ok = false;
@@ -86,7 +89,7 @@ public:
         }
  
         T temp = v[0];
-        v[0] v[n-1];
+        v[0] = v[n-1];
         v[n-1] = temp;
         n--;
         for(int i=ultPai(); i>= 0; i = pai(i)){
@@ -96,8 +99,10 @@ public:
 
     }
 
+      
 
-}
+
+};
 
 
 
@@ -114,6 +119,7 @@ int main(){
     h.insere(1);
     h.insere(2);
     h.insere(9);
+    cout<<"work"<<endl;
 
 
 
