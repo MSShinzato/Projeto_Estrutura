@@ -1,0 +1,543 @@
+#include <iostream>
+#include <string>
+#include <sstream>
+
+using namespace std;
+
+template <typename T>
+class ILista2{
+    
+public:
+    virtual bool Insere(string)=0;
+    virtual int  busca(string) = 0;
+    virtual bool Remove(string) = 0;
+    virtual void Imprime()=0;
+    virtual ~ILista2(){};
+};
+template <typename T>
+class LES: public ILista2<T>{
+
+private:
+    int M;
+    int n;
+    string *v;
+public:
+    //construtor
+    LES(int M){
+        this->M = M;
+        this->n = 0;
+        this->v = new string[M];
+    }
+    //destrutor
+    ~LES(){
+        delete[] this->v;
+    }
+    void Imprime(){
+        for (int i = 0; i < n; ++i) {
+            cout << v[i] <<  endl;
+        }
+        cout << endl;
+    }
+    bool Insere(string x){ 	
+        if (n == M){
+            return false;
+        }	
+        v[n] = x;
+		n++;
+        return true;
+    }
+    bool Remove(string x){
+        int posi = busca(x);
+        if (posi == -1){
+            return false;
+        }
+        int i;
+        for (i = posi; i < n-1; i++) {
+            v[i] = v[i + 1];
+        }
+            n--;
+            return true;
+    }
+    int busca(string x){
+        
+        for (int i = 0; i < n; i++) {
+            if ( v[i] == x ){
+                return i;
+            }
+        }
+        return -1;
+    }
+};
+
+template <typename T>
+class ILista {
+public:
+    virtual bool Insere (int,string) = 0;
+    virtual bool Altera (string) = 0;
+    virtual bool Remove (int) = 0;
+    virtual void Imprime () = 0;
+    virtual ~ILista (){};
+};
+
+template <typename T>
+class LDE;
+
+template <typename T>
+class No {
+public:
+    string nome;
+    int quantidade;
+    float preco;
+    int valor;
+    No<T>* prox;
+    No<T> *pai;
+    No<T> *esq;
+    No<T> *dir;
+    T altura;
+};
+template <typename T>
+class LDE;
+
+template <typename T>
+class LDE : public ILista<T> {
+private:
+    No<T>* primeiro;
+    int n;
+    T sentinela;
+    void limpa () {
+        while(this->Remove(0));
+    }
+
+    void copia (const LDE& other) {
+    }
+
+public:
+    LDE () {
+        primeiro = NULL;
+        n = 0;
+    }
+
+
+    bool Insere(int quan, string na){
+
+        No<T>* novo = new No<T>;
+
+        novo->quantidade = quan;
+        novo->nome = na;
+        novo->prox = NULL;
+
+        No<T>* atual = primeiro;
+        No<T>* anterior = NULL;
+
+        if(anterior == NULL){
+            primeiro = novo;
+        }else{
+            anterior->prox = novo;
+        }
+
+        novo->prox = atual;
+
+        n++;
+        return true;
+    };
+    bool Altera(string na){
+        No<T>* atual = primeiro;
+        int i=0;
+        int e=0;
+        int quan=0; 
+		while(atual){
+			if(atual->nome == na){
+			cout << "FUNCIONARIO ENCONTRADO DIGITE:" << endl;	
+			cout << "1-ALTERAR NUMERO DE VENDAS" << endl;	
+			cout << "2-REMOVELO" << endl;	
+			cin >> i;
+			if(i==1){
+				cout <<"NOVO NUMERO DE VENDAS?" << endl;
+				cin >> quan;
+				atual->quantidade = quan;
+			} 
+			if(i==2){
+				Remove(e);
+				cout <<"REMOVIDO" << endl;
+			} 
+			// ja encontrou o funcionario entao retorna true
+			return true;
+			}
+		e++;	
+		atual = atual->prox;	
+		}
+		cout <<"FUNCIONARIO NAO ENCONTRADO" << endl;
+        return false;
+    };
+
+    void Imprime(){
+        No<T>* atual = primeiro;
+        while(atual){
+        	cout << "Nome funcionario: ";
+        	std::cout << atual->nome << " \n ";
+            cout << "Numero de vendas do funcionario: ";
+            std::cout << atual->quantidade << " \n ";
+            cout << "=======================" << endl;
+            atual = atual->prox;
+        }
+        std::cout << std::endl;
+    };   
+	bool Remove (int idx){
+        int v2=0;
+        No<T>* atual = primeiro;
+        No<T>* anterior = NULL;
+        int i = idx;
+        if(idx<0||idx>=n){
+            return false;
+        }
+        while(atual && i--){
+            anterior = atual;
+            atual = atual->prox;
+        }
+        if(anterior){
+            anterior->prox=atual->prox;
+        } else{
+            primeiro=atual->prox;
+        }
+        n--;
+        delete atual;
+    };
+
+    ~LDE () {
+        limpa ();
+    };
+};
+
+template <typename T> class IArvBinBusca {
+public:
+    virtual bool Insere(int valor,int quan,float pre,string na) = 0;
+    virtual bool Remove(T valor) = 0;
+    virtual bool Alturas(No<T> * na) {}
+    virtual void Imprime(No<T>* na)=0;
+    virtual void Imprime2(No<T>* na)=0;
+    virtual void Viraesquerda(No<T>* na)=0;
+    virtual void Viradireita(No<T>* na)=0;
+    virtual No<T> *Busca(string na,int valor) = 0;
+    virtual ~IArvBinBusca() {}
+private:
+
+};
+template <typename T> class ArvBin {
+private:
+    int n;
+    No<T>* sucessor(No<T>* n){
+        n = n->dir;
+        while(n && n->esq){
+            n = n->esq;
+        }
+        return n;
+    }
+public:
+    No<T>* raiz;
+    ArvBin(
+
+    ){
+        raiz = NULL;
+        n=0;
+    };
+
+    bool Insere(int valor,int quan,float pre,string na) {
+        No<T>* novo = new No<T>;
+        novo->valor = valor;
+        novo->quantidade = quan;
+        novo->preco = pre;
+        novo->nome = na;
+        novo->esq = NULL;
+        novo->dir = NULL;
+        novo->pai = NULL;
+        novo->altura = 0;
+        if(raiz==NULL){
+            raiz = novo;
+            return true;
+        }
+        No<T>* atual = raiz;
+        No<T>* anterior = NULL;
+        while (atual){
+            anterior = atual;
+            if(valor<atual->valor)
+                atual = atual->esq;
+            else
+                atual = atual->dir;
+        }
+
+        novo->pai = anterior;
+        if(valor <  anterior->valor)
+            anterior->esq = novo;
+        else
+            anterior->dir = novo;
+
+        while(anterior){
+
+            if(anterior->esq && anterior->dir){
+                anterior->altura = max(anterior->esq->altura, anterior->dir->altura)+1;
+            }
+            if(anterior->esq == NULL && anterior->dir){
+                anterior->altura = anterior->dir->altura +1;
+            }
+            if(anterior->dir == NULL && anterior->esq){
+                anterior->altura = anterior->esq->altura +1;
+            }
+            anterior = anterior->pai;
+        }
+
+        n++;
+        return true;
+    }
+    int altura(No<T>* na){
+        int a=0;
+        int b=0;
+        while(na){
+            a=na->pai->dir;
+            b=na->pai->esq;
+            a=a-b;
+            if(a>= 2 ){
+                a=na->dir;
+                if(a<0){
+                    Viradireita( na);
+                    Viraesquerda( na);
+                }
+                Viraesquerda(na);
+            }
+            if(a <= -2){
+                a=na->dir;
+                if(a>0){
+                    Viraesquerda( na);
+                    Viradireita( na);
+                }
+                Viradireita( na);
+            }
+
+            na = na->pai;
+
+        }
+
+    }
+    void Imprime(No<T>* na){
+        if(na!=NULL){
+            Imprime(na->esq);
+            cout << "Nome do produto: ";
+            cout << na->nome << endl;
+            cout << "Quantidade do produto: ";
+            cout << na->quantidade << endl;
+            cout << "Preco do produto: RS";
+            cout << na->preco << endl;
+            cout << "Prioridade";
+            cout << na->valor << endl;
+            cout << "=======================" << endl;
+            Imprime(na->dir);
+        }
+    }
+    void Imprime2(No<T>* na){
+
+        if(na!=NULL){
+            Imprime(na->dir);
+            cout << na->valor << endl;
+            Imprime(na->esq);
+        }
+    }
+    void Viradireita(No<T>* na){
+      /*  if(na->pai->pai){
+            raiz = na;
+        }
+        No<T>* filho = na->dir;
+        No<T>* atual = na;
+        na = na->pai;
+        na->pai = atual;
+        na->dir = filho;
+        */
+
+    }
+    void Viraesquerda(No<T>* na){
+       /* if(na->pai->pai){
+            raiz = na;
+        }
+        No<T>* filho = na->esq;
+        No<T>* atual = na;
+        na = na->pai;
+        na->pai = atual;
+        na->esq = filho;
+        */
+    }
+    bool Remove(T valor){
+        No<T>* atual = raiz;
+        No<T>* anterior = NULL;
+        while (atual && atual->valor != valor){
+            anterior = atual;
+            if(valor<atual->valor)
+                atual = atual->esq;
+            else
+                atual = atual->dir;
+        }
+        if (atual == NULL)
+            return false;
+        int filhos = 0;
+        filhos = (atual->esq!=NULL) + (atual->dir!=NULL);
+
+        if (filhos == 0){
+            if (atual->pai){
+                if(atual == atual->pai->esq){
+                    atual->pai->esq = NULL;
+                }
+                else{
+                    atual->pai->dir = NULL;
+                }
+            }
+            else{
+                raiz = NULL;
+            }
+            delete atual;
+            n--;
+        }
+        else if(filhos == 1){
+            No<T>* unicoFilho = atual->esq;
+            No<T>* pai = atual->pai;
+            if(!unicoFilho)
+                unicoFilho = atual->dir;
+            unicoFilho->pai = pai;
+            if(pai){
+                if(unicoFilho->valor < pai->valor)
+                    pai->esq = unicoFilho;
+                else
+                    pai->dir = unicoFilho;
+            }
+            else{
+                raiz = unicoFilho;
+            }
+            delete atual;
+            n--;
+        }
+        else{
+            T valorSuc = sucessor(atual)->valor;
+            this->Remove(valorSuc);
+            atual->valor = valorSuc;
+        }
+
+    }
+
+
+    No<T> *Busca(string na,int valor) {
+       /* No<T>* atual = raiz;
+        while (atual && atual->valor != valor){
+            anterior = atual;
+            if(valor<atual->valor)
+                atual = atual->esq;
+            else
+                atual = atual->dir;
+        
+		}
+        if (atual == NULL)
+            return false;
+        
+        return atual;
+      */  
+    }
+
+    virtual ~ArvBin(){
+
+
+
+    };
+};
+int main () {
+	ArvBin<int> arv;
+	LES<string> le(50);
+    LDE<int> l;
+    int n=1;
+    int m=0;
+    int valor;
+	int quan;
+	float pre;
+	string na;
+	
+    while(n!=0){
+    cout << "Digite o numero para a area que deseja:" << endl;
+	cout << "1-INSERIR NOVO PRODUTO" << endl;
+	cout << "2-MOSTRAR PRODUTOS JA CADASTRADOS" << endl;
+	cout << "3-ALTERAR PRODUTOS" << endl;
+	cout << "4-NOVO FUNCIONARIO" << endl;
+	cout << "5-ALTERAR DADOS FUNCIONARIO" << endl;
+	cout << "6-INSERIR NOVO FORNECEDOR" << endl;
+	cout << "7-REMOVER FORNECEDOR" << endl;
+	cout << "8-MOSTRAR FORNECEDORES" << endl;
+	cout << "9-MOSTRAR FUNCIONARIOS" << endl;
+	cout << "10-EXIT" << endl;
+	cin >> m; 
+	
+	if(m==1){
+	cout << "INSERIR NOVO PRODUTO" << endl;	
+	cout << "ENTRE COM O NOME DO PRODUTO:" << endl;	
+	cin >> na;
+	cout << "ENTRE COM A QUANTIDADE DE ESTOQUE:" << endl;
+	cin >> quan;
+	cout << "INSIRA SEU PRECO:" << endl;
+	cin >> pre;
+	cout << "QUAL SEU NUMERO DE VENDAS ESTIMADO POR SEMANA(CASO NAO HAJA ENTRE COM 0):" << endl;
+	cin >> valor;
+	arv.Insere (valor,quan,pre,na);
+	}
+	
+	if(m==2){
+	cout << "LISTA DE PRODUTOS" << endl;
+	arv.Imprime(arv.raiz);
+	}
+	if(m==3){
+		cout << "1-ALTERAR TOTALMENTE O PRODUTO" << endl;
+		cout << "2-ATUALIZAR SUAS VENDAS" << endl;
+		cin >> m; 
+		if(m==1){	
+			//ainda nao adicionado alterar ultima variavel valor 0
+		}
+		if(m==2){
+			while(m==2){
+				cout << "ENTRE COM O NOME E A QUANTIDADE VENDIDA" << endl;
+				//ainda nao adicionado alterar ultima variavel valor 1
+				cout << "DESEJA CONTINUAR DIGITE 2, SE NAO QUALQUER OUTRA COISA" << endl;
+				cin >> m; 
+			}			
+		}
+	}
+    if(m==4){
+	cout << "ENTRAR COM O NOME E SEU NUMERO DE VENDAS" << endl;
+	cout << "ENTRE COM O NOME:" << endl;	
+	cin >> na;
+	cout << "ENTRE COM A QUANTIDADE:" << endl;
+	cin >> quan;
+	l.Insere(quan,na);
+	}
+	if(m==5){
+	cout << "NOME DO FUNCIONARIO?" << endl;
+	cin >> na;
+	l.Altera(na);
+	}
+	if(m==6){
+	cout << "INSERIR NOVO FORNECEDOR" << endl;	
+	cout << "ENTRE COM O NOME DO FORNECEDOR:" << endl;	
+	cin >> na;
+	le.Insere (na);
+	}
+	if(m==7){
+	cout << "REMOVER UM FORNECEDOR" << endl;	
+	cout << "ENTRE COM O NOME DO FORNECEDOR:" << endl;	
+	cin >> na;
+	le.Remove (na);
+	}
+	if(m==8){
+	cout << "LISTA DE FORNECEDORES" << endl;	
+	le.Imprime();
+	}
+	if(m==9){
+	cout << "LISTA DE FUNCIONARIOS" << endl;
+	l.Imprime();
+	}
+	if(m==10){
+	cout << "finalizando" << endl;
+	n=0;
+	}
+	}
+    return 0;
+}
