@@ -1,15 +1,24 @@
+#ifndef HEAP_H
+#define HEAP_H
 #include <iostream>
 
 using namespace std;
 
 template <typename T, int MAX>
 
+
+
 class Heap{
+
+
 private:
     T v[MAX];
     int n;
     int pai(int i){
-        return (i+1)/2;
+        if(i==0){
+            return -1;
+        }
+        return (i-1)/2;
     }
     int fe(int i){
         return 2*i+1;
@@ -49,80 +58,84 @@ private:
 
 
 public:
-    Heap(): n(0){
+    //Heap(): n(0){
 
-    }
-    Heap(T v[], int n){
-        //this.n = 0;
+    //}
+    Heap(){
+        cout<<"heap construida"<<endl;
+        this->n= 0;
         if(n >= MAX){
             return;
         }
-        for(int i=0;i<n;i++){
+        for(int i=0;i<MAX;i++){
             this->v[i] = v[i];
         }
         this->n = n;
+
+        cout<<"heap construida2"<<endl;
         constroiHeap();
+        cout<<"heap construida3"<<endl;
+
     }
 
     bool insere(T x){
-        if(n < MAX){
+      cout<<"elemento inserido1"<<endl;
+        if(n >= MAX){
             return false;
 
         }
-
+        cout<<"elemento inserido"<<endl;
         v[n] = x;
-        
+        cout<<"elemento inserido2"<<endl;
         n++;
+        cout<< n <<endl;
+        cout<<"elemento inserido3"<<endl;
 
-        for(int i=ultPai(); i>= 0; i = pai(i)){
+        for(int i=ultPai(); i >= 0; i = pai(i)){
+
             swift(i);
+             cout << i << endl;
         }
+        cout<<"elemento inserid4"<<endl;
         return true;
+
+        cout<<"elemento inserido"<<endl;
     }
 
-    T remove(bool *ok,int n){
-        if(n == 0){
+    T remove(){
+        if(n==0){
+          cout<<"não tem nenhum elemento na heap"<<endl;
+          return v[0];
+        }
+        /*if(n == 0){
             if(ok){
                 *ok = false;
             }
             return v[0];
-        }
- 
+        }*/
+
         T temp = v[0];
+        cout<<"igualo o temp"<<endl;
         v[0] = v[n-1];
+        cout<<"v[0]=v[n-1]"<<endl;
         v[n-1] = temp;
+        cout<<"v[n-1]=temp"<<endl;
         n--;
+        cout<<"v[n-1]=temp"<<endl;
         for(int i=ultPai(); i>= 0; i = pai(i)){
             swift(i);
+            cout<<"swift aplicado"<<endl;
+
         }
+        cout<<"retorna temp"<<endl;
         return temp;
+
 
     }
 
-      
+
 
 
 };
-
-
-
-
-
-
-
-
-int main(){
-
-    Heap<int,10> h;
-    h.insere(5);
-    h.insere(8);
-    h.insere(1);
-    h.insere(2);
-    h.insere(9);
-    cout<<"work"<<endl;
-
-
-
-
-    return 0;
-}
+Heap<int,10>*h;
+#endif // HEAP_H
