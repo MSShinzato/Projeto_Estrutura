@@ -1,6 +1,7 @@
 #include <iostream>
 #include <string>
 #include <sstream>
+#include <fstream>
 
 using namespace std;
 
@@ -12,6 +13,7 @@ public:
     virtual int  busca(string) = 0;
     virtual bool Remove(string) = 0;
     virtual void Imprime()=0;
+    virtual void Salva()=0;
     virtual ~ILista2(){};
 };
 template <typename T>
@@ -37,6 +39,18 @@ public:
             cout << v[i] <<  endl;
         }
         cout << endl;
+    }
+    void Salva(){
+
+        ofstream arquivoS;        
+        arquivoS.open("Fornecedor.txt",ios::app);
+        for (int i = 0; i < n; ++i) {
+        	arquivoS << "Nome do Fornecedor: ";
+            arquivoS << v[i] << endl;
+        }
+
+    	arquivoS.close();
+    	
     }
     bool Insere(string x){ 	
         if (n == M){
@@ -74,6 +88,7 @@ class ILista {
 public:
     virtual bool Insere (int,string) = 0;
     virtual bool Altera (string) = 0;
+    virtual void Salvar() = 0;
     virtual bool Remove (int) = 0;
     virtual void Imprime () = 0;
     virtual ~ILista (){};
@@ -116,8 +131,23 @@ public:
         primeiro = NULL;
         n = 0;
     }
+	
+	void Salvar(){
+		No<T>* atual = primeiro;
+        ofstream arquivoS;        
+        arquivoS.open("Funcionario.txt",ios::app);
 
+        while(atual){
+        	arquivoS << "Nome funcionario: ";
+            arquivoS << atual->nome << endl;
+            arquivoS << "Numero de vendas do funcionario: ";
+            arquivoS << atual->quantidade << endl;
+            atual = atual->prox;
+        }
 
+    	arquivoS.close();
+    	
+    }
     bool Insere(int quan, string na){
 
         No<T>* novo = new No<T>;
@@ -212,14 +242,16 @@ template <typename T> class IArvBinBusca {
 public:
     virtual bool Insere(int valor,int quan,float pre,string na) = 0;
     virtual bool Remove(T valor) = 0;
+    virtual bool Altera(No<T>* na,string nome) = 0;
+    virtual void Salva(No<T>* na);
+    virtual void Ler_arquivo();
+    virtual int Balancear(No<T>* na);
     virtual bool Alturas(No<T> * na) {}
-    virtual void Imprime(No<T>* na)=0;
-    virtual void Imprime2(No<T>* na)=0;
+    virtual void ImprimeMenor(No<T>* na)=0;
+    virtual void ImprimeMaior(No<T>* na)=0;
     virtual void Viraesquerda(No<T>* na)=0;
     virtual void Viradireita(No<T>* na)=0;
-    virtual No<T> *Busca(string na,int valor) = 0;
     virtual ~IArvBinBusca() {}
-private:
 
 };
 template <typename T> class ArvBin {
@@ -271,55 +303,78 @@ public:
         else
             anterior->dir = novo;
 
-        while(anterior){
-
-            if(anterior->esq && anterior->dir){
-                anterior->altura = max(anterior->esq->altura, anterior->dir->altura)+1;
-            }
-            if(anterior->esq == NULL && anterior->dir){
-                anterior->altura = anterior->dir->altura +1;
-            }
-            if(anterior->dir == NULL && anterior->esq){
-                anterior->altura = anterior->esq->altura +1;
-            }
-            anterior = anterior->pai;
+		altura(anterior);
+        while(novo){
+            Balancear(novo->pai);
+            novo = novo->pai;
         }
-
         n++;
         return true;
     }
     int altura(No<T>* na){
-        int a=0;
-        int b=0;
-        while(na){
-            a=na->pai->dir;
-            b=na->pai->esq;
-            a=a-b;
-            if(a>= 2 ){
-                a=na->dir;
-                if(a<0){
-                    Viradireita( na);
-                    Viraesquerda( na);
-                }
-                Viraesquerda(na);
-            }
-            if(a <= -2){
-                a=na->dir;
-                if(a>0){
-                    Viraesquerda( na);
-                    Viradireita( na);
-                }
-                Viradireita( na);
-            }
+       while(na){
 
+            if(na->esq && na->dir){
+                na->altura = max(na->esq->altura, na->dir->altura)+1;
+            }
+            if(na->esq == NULL && na->dir){
+                na->altura = na->dir->altura +1;
+            }
+            if(na->dir == NULL && na->esq){
+                na->altura = na->esq->altura +1;
+            }
             na = na->pai;
-
         }
 
     }
-    void Imprime(No<T>* na){
+    int Balancear(No<T>* na){
+        //int a=na->esq->altura;
+       // int b=na->dir->altura;
+        //    a=a-b;
+        //    if(a >= 2 ){
+         //       if(na->prox->altura<0){
+
+        //            Viradireita(na);
+         //           }
+         //     Viraesquerda(na);
+         //   }
+         //   if(a <= -2 ){
+         //       if(na->prox->altura>0) {
+         //           Viraesquerda(na);
+          //      }
+          //      Viradireita(na);
+          //  }
+
+    }
+    void Salva(No<T>* na){
+
+        ofstream arquivoS;        
+        arquivoS.open("Produtor.txt",ios::app);
+        arquivoS << "Nome do produto: ";
+        arquivoS << na->nome << endl;
+        arquivoS << "Quantidade do produto: ";
+		arquivoS << na->quantidade << endl;
+		arquivoS << "Preco do produto: RS";
+		arquivoS << na->preco << endl;
+		arquivoS << "Prioridade";
+		arquivoS << na->valor << endl;
+    	arquivoS.close();
+    	
+    }
+    void Ler_arquivo(){	
+    	ifstream arquivoE;
+        string linha;
+        arquivoE.open("Produtor.txt");
+        if(arquivoE.is_open()){
+        	while(getline(arquivoE,linha)){
+            cout << linha << endl;          
+			}
+		}
+		arquivoE.close();
+    }
+    void ImprimeMenor(No<T>* na){
         if(na!=NULL){
-            Imprime(na->esq);
+            ImprimeMenor(na->esq);
             cout << "Nome do produto: ";
             cout << na->nome << endl;
             cout << "Quantidade do produto: ";
@@ -329,15 +384,16 @@ public:
             cout << "Prioridade";
             cout << na->valor << endl;
             cout << "=======================" << endl;
-            Imprime(na->dir);
+            Salva(na);
+            ImprimeMenor(na->dir);
         }
     }
-    void Imprime2(No<T>* na){
+    void ImprimeMaior(No<T>* na){
 
         if(na!=NULL){
-            Imprime(na->dir);
+            ImprimeMaior(na->dir);
             cout << na->valor << endl;
-            Imprime(na->esq);
+            ImprimeMaior(na->esq);
         }
     }
     void Viradireita(No<T>* na){
@@ -363,6 +419,21 @@ public:
         na->esq = filho;
         */
     }
+    // alterar quantidade do estoque, a arvore utiliza a prioridade para se organizar então não ira desbalanceala
+    bool Altera(No<T>* na,string nome){   	
+    	if(na!=NULL){
+            Altera(na->dir,nome);
+            if(na->nome==nome){
+            	int quan;
+            	cout << "Qual a nova quantidade?" << endl;
+				cin >> quan; 
+            	na->quantidade=quan;
+            	return true; 
+			}
+
+            Altera(na->esq,nome);
+        }
+	}
     bool Remove(T valor){
         No<T>* atual = raiz;
         No<T>* anterior = NULL;
@@ -375,6 +446,7 @@ public:
         }
         if (atual == NULL)
             return false;
+            
         int filhos = 0;
         filhos = (atual->esq!=NULL) + (atual->dir!=NULL);
 
@@ -419,24 +491,6 @@ public:
 
     }
 
-
-    No<T> *Busca(string na,int valor) {
-       /* No<T>* atual = raiz;
-        while (atual && atual->valor != valor){
-            anterior = atual;
-            if(valor<atual->valor)
-                atual = atual->esq;
-            else
-                atual = atual->dir;
-        
-		}
-        if (atual == NULL)
-            return false;
-        
-        return atual;
-      */  
-    }
-
     virtual ~ArvBin(){
 
 
@@ -453,7 +507,7 @@ int main () {
 	int quan;
 	float pre;
 	string na;
-	
+	arv.ImprimeMenor(arv.raiz);
     while(n!=0){
     cout << "Digite o numero para a area que deseja:" << endl;
 	cout << "1-INSERIR NOVO PRODUTO" << endl;
@@ -476,30 +530,20 @@ int main () {
 	cin >> quan;
 	cout << "INSIRA SEU PRECO:" << endl;
 	cin >> pre;
-	cout << "QUAL SEU NUMERO DE VENDAS ESTIMADO POR SEMANA(CASO NAO HAJA ENTRE COM 0):" << endl;
+	cout << "QUAL SEU Nivel de prioridade:" << endl;
 	cin >> valor;
 	arv.Insere (valor,quan,pre,na);
 	}
 	
 	if(m==2){
 	cout << "LISTA DE PRODUTOS" << endl;
-	arv.Imprime(arv.raiz);
+	arv.ImprimeMenor(arv.raiz);
 	}
-	if(m==3){
-		cout << "1-ALTERAR TOTALMENTE O PRODUTO" << endl;
-		cout << "2-ATUALIZAR SUAS VENDAS" << endl;
-		cin >> m; 
-		if(m==1){	
-			//ainda nao adicionado alterar ultima variavel valor 0
-		}
-		if(m==2){
-			while(m==2){
-				cout << "ENTRE COM O NOME E A QUANTIDADE VENDIDA" << endl;
-				//ainda nao adicionado alterar ultima variavel valor 1
-				cout << "DESEJA CONTINUAR DIGITE 2, SE NAO QUALQUER OUTRA COISA" << endl;
-				cin >> m; 
-			}			
-		}
+	if(m==3){	
+	cout << "ATUALIZAR VENDAS DO PRODUTO" << endl;
+		cout << "ENTRE COM O NOME" << endl;
+		cin >> na;
+		arv.Altera(arv.raiz,na);
 	}
     if(m==4){
 	cout << "ENTRAR COM O NOME E SEU NUMERO DE VENDAS" << endl;
@@ -539,5 +583,7 @@ int main () {
 	n=0;
 	}
 	}
+	l.Salvar();
+	le.Salva();
     return 0;
 }
