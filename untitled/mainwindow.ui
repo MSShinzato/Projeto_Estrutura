@@ -31,13 +31,13 @@
     <property name="geometry">
      <rect>
       <x>0</x>
-      <y>30</y>
+      <y>20</y>
       <width>661</width>
       <height>241</height>
      </rect>
     </property>
     <property name="currentIndex">
-     <number>0</number>
+     <number>5</number>
     </property>
     <widget class="QWidget" name="tab">
      <attribute name="title">
@@ -141,8 +141,8 @@
      <widget class="QPushButton" name="btnSalvar">
       <property name="geometry">
        <rect>
-        <x>150</x>
-        <y>150</y>
+        <x>100</x>
+        <y>180</y>
         <width>75</width>
         <height>23</height>
        </rect>
@@ -187,25 +187,107 @@
        <string>Salvar</string>
       </property>
      </widget>
-    </widget>
-    <widget class="QWidget" name="tab_2">
-     <attribute name="title">
-      <string>Busca</string>
-     </attribute>
-     <widget class="QLabel" name="lblBusca">
+     <widget class="QPushButton" name="btnSalvarFunc">
       <property name="geometry">
        <rect>
-        <x>140</x>
-        <y>10</y>
-        <width>47</width>
-        <height>13</height>
+        <x>460</x>
+        <y>180</y>
+        <width>75</width>
+        <height>23</height>
        </rect>
       </property>
       <property name="text">
-       <string>Produto:</string>
+       <string>Salvar</string>
       </property>
      </widget>
-     <widget class="QLineEdit" name="txtBusca">
+     <widget class="QLineEdit" name="txtFunc_3">
+      <property name="geometry">
+       <rect>
+        <x>410</x>
+        <y>110</y>
+        <width>211</width>
+        <height>20</height>
+       </rect>
+      </property>
+     </widget>
+     <widget class="QLabel" name="lblFuncIns">
+      <property name="geometry">
+       <rect>
+        <x>340</x>
+        <y>110</y>
+        <width>61</width>
+        <height>16</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>Funcionário:</string>
+      </property>
+     </widget>
+     <widget class="QLineEdit" name="txtPrio">
+      <property name="geometry">
+       <rect>
+        <x>70</x>
+        <y>140</y>
+        <width>211</width>
+        <height>20</height>
+       </rect>
+      </property>
+     </widget>
+     <widget class="QLabel" name="lblPrio">
+      <property name="geometry">
+       <rect>
+        <x>10</x>
+        <y>140</y>
+        <width>71</width>
+        <height>16</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>Prioridade:</string>
+      </property>
+     </widget>
+     <widget class="QLabel" name="lblQuant_2">
+      <property name="geometry">
+       <rect>
+        <x>340</x>
+        <y>140</y>
+        <width>61</width>
+        <height>16</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>Quantidade:</string>
+      </property>
+     </widget>
+     <widget class="QLineEdit" name="txtQuantFunc">
+      <property name="geometry">
+       <rect>
+        <x>410</x>
+        <y>140</y>
+        <width>211</width>
+        <height>20</height>
+       </rect>
+      </property>
+     </widget>
+    </widget>
+    <widget class="QWidget" name="tab_2">
+     <attribute name="title">
+      <string>Funcionario do Mês</string>
+     </attribute>
+     <widget class="QLabel" name="lblFuncMes">
+      <property name="geometry">
+       <rect>
+        <x>90</x>
+        <y>10</y>
+        <width>101</width>
+        <height>16</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>Funcionario do Mês:</string>
+      </property>
+     </widget>
+     <widget class="QLineEdit" name="txtFuncMes">
       <property name="geometry">
        <rect>
         <x>190</x>
@@ -215,7 +297,7 @@
        </rect>
       </property>
      </widget>
-     <widget class="QPushButton" name="btnBusca">
+     <widget class="QPushButton" name="btnInsMes">
       <property name="geometry">
        <rect>
         <x>420</x>
@@ -225,17 +307,43 @@
        </rect>
       </property>
       <property name="text">
-       <string>Buscar</string>
+       <string>Adicionar</string>
       </property>
      </widget>
      <widget class="QTextBrowser" name="textBrowser">
       <property name="geometry">
        <rect>
-        <x>140</x>
+        <x>30</x>
         <y>40</y>
         <width>371</width>
         <height>161</height>
        </rect>
+      </property>
+     </widget>
+     <widget class="QPushButton" name="btnRemMes">
+      <property name="geometry">
+       <rect>
+        <x>420</x>
+        <y>50</y>
+        <width>91</width>
+        <height>23</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>Remover</string>
+      </property>
+     </widget>
+     <widget class="QPushButton" name="btnMostrar">
+      <property name="geometry">
+       <rect>
+        <x>420</x>
+        <y>90</y>
+        <width>91</width>
+        <height>23</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>Atualizar</string>
       </property>
      </widget>
     </widget>
@@ -282,8 +390,8 @@
      <widget class="QLabel" name="lblRemForn">
       <property name="geometry">
        <rect>
-        <x>130</x>
-        <y>70</y>
+        <x>140</x>
+        <y>120</y>
         <width>61</width>
         <height>16</height>
        </rect>
@@ -295,8 +403,8 @@
      <widget class="QLineEdit" name="txtRemForn">
       <property name="geometry">
        <rect>
-        <x>210</x>
-        <y>70</y>
+        <x>220</x>
+        <y>120</y>
         <width>211</width>
         <height>20</height>
        </rect>
@@ -305,14 +413,37 @@
      <widget class="QPushButton" name="btnRemForn">
       <property name="geometry">
        <rect>
-        <x>430</x>
-        <y>70</y>
+        <x>440</x>
+        <y>120</y>
         <width>71</width>
         <height>23</height>
        </rect>
       </property>
       <property name="text">
        <string>Remover</string>
+      </property>
+     </widget>
+     <widget class="QLabel" name="lblRemVal">
+      <property name="geometry">
+       <rect>
+        <x>150</x>
+        <y>60</y>
+        <width>47</width>
+        <height>13</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>Prioridade:</string>
+      </property>
+     </widget>
+     <widget class="QLineEdit" name="txtRemPrio">
+      <property name="geometry">
+       <rect>
+        <x>210</x>
+        <y>60</y>
+        <width>211</width>
+        <height>20</height>
+       </rect>
       </property>
      </widget>
     </widget>
@@ -335,6 +466,134 @@
        <rect>
         <x>40</x>
         <y>70</y>
+        <width>75</width>
+        <height>23</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>Atualizar</string>
+      </property>
+     </widget>
+    </widget>
+    <widget class="QWidget" name="tab_5">
+     <attribute name="title">
+      <string>Lista de Fornecedores</string>
+     </attribute>
+     <widget class="QTextBrowser" name="txtAreaForn">
+      <property name="geometry">
+       <rect>
+        <x>170</x>
+        <y>10</y>
+        <width>381</width>
+        <height>181</height>
+       </rect>
+      </property>
+     </widget>
+     <widget class="QPushButton" name="btnImprime_2">
+      <property name="geometry">
+       <rect>
+        <x>60</x>
+        <y>70</y>
+        <width>75</width>
+        <height>23</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>Atualizar</string>
+      </property>
+     </widget>
+    </widget>
+    <widget class="QWidget" name="tab_6">
+     <attribute name="title">
+      <string>Alteração Funcionario</string>
+     </attribute>
+     <widget class="QLabel" name="lblFunc">
+      <property name="geometry">
+       <rect>
+        <x>90</x>
+        <y>10</y>
+        <width>61</width>
+        <height>16</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>Funcionário: </string>
+      </property>
+     </widget>
+     <widget class="QLineEdit" name="txtFuncDemonio">
+      <property name="geometry">
+       <rect>
+        <x>160</x>
+        <y>10</y>
+        <width>271</width>
+        <height>20</height>
+       </rect>
+      </property>
+     </widget>
+     <widget class="QPushButton" name="btnRemover_2">
+      <property name="geometry">
+       <rect>
+        <x>550</x>
+        <y>60</y>
+        <width>75</width>
+        <height>23</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>Remover</string>
+      </property>
+     </widget>
+     <widget class="QLabel" name="lblQuantVendas">
+      <property name="geometry">
+       <rect>
+        <x>40</x>
+        <y>50</y>
+        <width>121</width>
+        <height>16</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>Quantidade de vendas:</string>
+      </property>
+     </widget>
+     <widget class="QLineEdit" name="txtDemonio">
+      <property name="geometry">
+       <rect>
+        <x>160</x>
+        <y>50</y>
+        <width>271</width>
+        <height>20</height>
+       </rect>
+      </property>
+     </widget>
+     <widget class="QPushButton" name="btnAlterar">
+      <property name="geometry">
+       <rect>
+        <x>550</x>
+        <y>90</y>
+        <width>75</width>
+        <height>23</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>Alterar</string>
+      </property>
+     </widget>
+     <widget class="QTextBrowser" name="textBrowser_2">
+      <property name="geometry">
+       <rect>
+        <x>40</x>
+        <y>80</y>
+        <width>391</width>
+        <height>131</height>
+       </rect>
+      </property>
+     </widget>
+     <widget class="QPushButton" name="btnAtualizaFunc">
+      <property name="geometry">
+       <rect>
+        <x>550</x>
+        <y>120</y>
         <width>75</width>
         <height>23</height>
        </rect>

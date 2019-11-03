@@ -17,6 +17,10 @@ QtApplication {
 
     files: [
         "LDE.h",
+        "LES.h",
+        "arvore.h",
+        "fila.h",
+        "heap.h",
         "main.cpp",
         "mainwindow.cpp",
         "mainwindow.h",

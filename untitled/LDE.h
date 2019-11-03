@@ -3,62 +3,98 @@
 #include <iostream>
 #include <string>
 #include <sstream>
+#include <fstream>
+
 using namespace std;
 
-/*class ILista{
+/*
+class ILista {
 public:
-    virtual bool Insere (int,int,float,string) = 0;
+    virtual bool Insere (int,string) = 0;
+    virtual bool Altera (string) = 0;
+    virtual void Salvar() = 0;
     virtual bool Remove (int) = 0;
     virtual void Imprime () = 0;
     virtual ~ILista (){};
 };*/
 
+// funcionario
+template <typename T>
 class LDE;
 
+template <typename T>
 class No {
-private:
-
 public:
     string nome;
     int quantidade;
-    double preco;
-    string tamanho;
-    No* prox;
-    friend class LDE;
-
+    float preco;
+    int valor;
+    No<T>* prox;
+    No<T> *pai;
+    No<T> *esq;
+    No<T> *dir;
 };
+template <typename T>
+class LDE;
 
-class LDE{ // class LDE : public ILista<T>
+template <typename T>
+class LDE{ //: public ILista<T>
 private:
-    //T sentinela;
-    void limpa () {
-        while(this->Remove(0));
-    }
+    No<T>* primeiro;
+    int n;
+    T sentinela;
+    /*void limpa () {
+        while(this->Remove());
+    }*/
 
     void copia (const LDE& other) {
     }
 
 public:
-    No* primeiro;
-    int n;
-    typedef struct Produto prod;
     LDE () {
         primeiro = NULL;
         n = 0;
     }
+    //sera utilizada para salvar no arquivo de texto oque futuramente sera mostrado no qt
+    void Salvar(){
+        No<T>* atual = primeiro;
+        ofstream arquivoS;
+        arquivoS.open("Funcionario.txt",ios::app);
+        //arquivoS.open("demonio.txt",ios::app);
 
-    bool Insere(string nome, double preco,string tam, int quant){
+        while(atual){
+            arquivoS << "Nome funcionario: ";
+            arquivoS << atual->nome << endl;
+            arquivoS << "Numero de vendas do funcionario: ";
+            arquivoS << atual->quantidade << endl;
+            atual = atual->prox;
+        }
 
-        No* novo = new No;
+        arquivoS.close();
+        //Ler_arquivo();
+    }
+    void Ler_arquivo(){
+        ifstream arquivoE;
+        string linha;
+        arquivoE.open("Funcionario.txt");
+        if(arquivoE.is_open()){
+            while(getline(arquivoE,linha)){
+            cout << linha << endl;
+            }
+        }
+        arquivoE.close();
+    }
+    //É inserido o funcionario e o seu numero atual de vendas
+    bool Insere(string na,int quan){
 
-        novo->nome = nome;
-        novo->preco = preco;
-        novo->tamanho = tam;
-        novo->quantidade = quant;
+        No<T>* novo = new No<T>;
+
+        novo->nome = na;
+        novo->quantidade = quan;
         novo->prox = NULL;
 
-        No* atual = primeiro;
-        No* anterior = NULL;
+        No<T>* atual = primeiro;
+        No<T>* anterior = NULL;
 
         if(anterior == NULL){
             primeiro = novo;
@@ -70,37 +106,59 @@ public:
 
         n++;
         return true;
-
-    }
-
+    };
+    bool Altera(string na, int quant){
+        No<T>* atual = primeiro;
+                while(atual){
+                    if(atual->nome == na){
+                        // ja encontrou o funcionario entao retorna true
+                        atual->quantidade = quant;
+                        ofstream arquivoS;
+                        // vai sobreescrever o conteúdo do arquivo
+                        arquivoS.open("Funcionario.txt");
+                        //arquivoS.open("demonio.txt");
+                        arquivoS.close();
+                        Salvar();
+                        return true;
+                    }
+                atual = atual->prox;
+                }
+                return false;
+    };
 
     void Imprime(){
-        No* atual = primeiro;
-        for(int i=0; i<n;i++){
-            cout << "Nome do produto: ";
-            cout << atual->nome << " \n ";
-            cout << "Quantidade do produto: ";
-            cout << atual->quantidade << " \n ";
-            cout << "Tamanho do produto: ";
-            cout << atual->tamanho << " \n ";
-            cout << "Preco do produto: RS";
-            cout << atual->preco << " \n ";
+        No<T>* atual = primeiro;
+        while(atual){
+            cout << "Nome funcionario: ";
+            std::cout << atual->nome << " \n ";
+            cout << "Numero de vendas do funcionario: ";
+            std::cout << atual->quantidade << " \n ";
             cout << "=======================" << endl;
             atual = atual->prox;
         }
-        cout << endl;
-    }
+        std::cout << std::endl;
+    };
+     //sera utilizado para remover um funcionario
+    bool Remove (string na){
+        //int v2=0;
+        int flag=0;
+        int e=0;
+        No<T>* atual = primeiro;
+        No<T>* anterior = NULL;
 
-    //O remover eu deixei so por eu nao estar querendo me preoculpar com o limpar depois tera que ver isto
-    bool Remove (int idx){
-        int v2=0;
-        No* atual = primeiro;
-        No* anterior = NULL;
-        int i = idx;
+        while(atual || flag!=1){
+            if(atual->nome == na){
+                flag = 1;
+            }
+            e++;
+            atual = atual->prox;
+        }
+
+        int idx = e;
         if(idx<0||idx>=n){
             return false;
         }
-        while(atual && i--){
+        while(atual && idx--){
             anterior = atual;
             atual = atual->prox;
         }
@@ -111,13 +169,11 @@ public:
         }
         n--;
         delete atual;
-    }
+    };
 
     ~LDE () {
-        limpa ();
-    }
-
-
+        //limpa ();
+    };
 };
 
 #endif // LDE_H
